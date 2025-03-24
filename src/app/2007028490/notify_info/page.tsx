@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
+import { closeWindow } from "@/utils/liff";
 
 // 定義 TypeScript 型別
 type Employee = {
@@ -39,14 +40,13 @@ const test: Employee = {
 };
 
 const NotificationBindingPage = () => {
-  const router = useRouter();
   // 點選「是，解除綁定」按鈕時呼叫此函式
   const [storedUserId, setStoredUserId] = useState<string | null>(null);
   const [mockData, setMockData] = useState<Employee>(test);
 
   const handleRedirectAndClose = async () => {
     // 執行其他邏輯，例如發送 API 請求後
-    await router.push("/close");
+    await closeWindow();
     // 不建議在這裡直接呼叫 liff.closeWindow()，
     // 讓 /close 頁面來處理視窗關閉邏輯會更穩定
   };

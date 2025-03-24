@@ -65,7 +65,7 @@ export default function TaipeiBusBinding() {
     // 組裝 payload
     const payload: LineNotifyPayload = {
       company: "臺北客運",
-      groupCode: data.projectGroup || "",
+      groupCode: "營收通知系統",
       phone: "",
       job: data.job || "",
       dept: data.dept,

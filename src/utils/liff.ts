@@ -52,6 +52,7 @@ export async function getUserProfile(): Promise<{
 }
 export async function closeWindow() {
   if (liff.isInClient()) {
+    liff.closeWindow();
     window.close();
   } else {
     alert("此功能僅適用於 LINE 應用程式內");
