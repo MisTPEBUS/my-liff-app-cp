@@ -8,9 +8,15 @@ interface LineLiffProps {
   children?: ReactNode; // 支援 children
 }
 
+type LiffUserProfile = {
+  userId: string;
+  displayName: string;
+  pictureUrl?: string;
+};
+
 const LineLiff = ({ id, children }: LineLiffProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<LiffUserProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
