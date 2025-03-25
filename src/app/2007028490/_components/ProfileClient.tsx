@@ -10,28 +10,20 @@ export default function ProfileClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [menu, setMenu] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 抓取 menu 參數
   useEffect(() => {
-    const value = searchParams.get("menu");
-    setMenu(value);
-    console.log("✅ menu 參數為：", value);
-  }, [searchParams]);
+    const run = async () => {
+      const menu = searchParams.get("menu"); // ✅ 直接在這邊抓
+      console.log("✅ 取得 menu 參數：", menu);
 
-  // 執行 LIFF + 判斷導向邏輯（依賴 menu）
-  useEffect(() => {
-    if (!menu) {
-      console.warn("⚠️ menu 為 null，不執行 fetchUserIdAndData");
-      return;
-    }
+      if (!menu) {
+        console.warn("⚠️ menu 為 null，導回首頁或顯示錯誤");
+        router.push("/");
+        return;
+      }
 
-    console.log("🟢 useEffect 觸發了！");
-
-    async function fetchUserIdAndData() {
-      console.log("🟢 fetchUserIdAndData 開始執行");
-
+      console.log("🟢 初始化 LIFF...");
       await initLiff();
       const Profile = await getUserProfile();
       console.log("🟢 取得的 Profile:", Profile);
@@ -41,8 +33,6 @@ export default function ProfileClient() {
         Cookies.set("displayName", Profile.displayName, { expires: 7 });
 
         try {
-          console.log("🟢 發送 API 請求... Profile?.userId");
-
           const response = await axios.post(
             "https://line-notify-18ab.onrender.com/v1/api/lineHook/user/checkUser",
             {
@@ -51,31 +41,31 @@ export default function ProfileClient() {
             }
           );
 
-          if (response.data?.id && response.data) {
-            console.log("✅ 使用者存在，menu =", menu);
+          const userExists = response.data?.id && response.data;
+          console.log("🟢 使用者是否存在：", userExists);
+
+          if (userExists) {
             if (menu === "sign") router.push(`/2007028490/notify_info`);
             else if (menu === "roadRecord")
               router.push(`/2007028490/roadRecord`);
-            else router.push(`/2007028490/signIn`); // fallback
+            else router.push(`/2007028490/signIn`);
           } else {
-            console.log("🟡 使用者不存在，導向註冊頁");
             router.push(`/2007028490/signIn`);
           }
         } catch (error) {
-          console.log("🔴 API 發生錯誤，導向註冊頁");
+          console.error("❌ 發送 API 時發生錯誤:", error);
           router.push(`/2007028490/signIn`);
-          console.error("❌ API 錯誤:", error);
         }
       } else {
-        console.warn("⚠️ 無法取得 userId");
+        console.warn("⚠️ 無法取得 Profile.userId，導向登入頁");
         router.push(`/2007028490/signIn`);
       }
 
       setLoading(false);
-    }
+    };
 
-    fetchUserIdAndData();
-  }, [router, menu]);
+    run();
+  }, [searchParams, router]);
 
   if (loading) {
     return <p>載入中...</p>;
