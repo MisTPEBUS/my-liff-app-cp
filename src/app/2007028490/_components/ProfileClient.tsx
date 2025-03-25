@@ -1,27 +1,30 @@
-"use client"; // ✅ 必須加上這行，讓 Next.js 知道這是 Client Component
+"use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ 用來導向不同頁面
-import Cookies from "js-cookie"; // ✅ 讀取 & 設定 Cookie
+import { useRouter, useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
 import axios from "axios";
-import { getUserProfile, initLiff } from "@/utils/liff";
-import { useSearchParams } from "next/navigation";
+import { initLiff, getUserProfile } from "@/utils/liff";
+
 export default function ProfileClient() {
-  const router = useRouter(); // ✅ 設定 Next.js router
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState<string | null>(null);
 
-  const [loading, setLoading] = useState(true);
-
+  // ✅ 取得 searchParams 並存進 state
   useEffect(() => {
     const value = searchParams.get("menu");
     setMenu(value);
     console.log("✅ menu 參數為：", value);
   }, [searchParams]);
 
+  // ✅ 當 menu 有值時，再執行主流程
   useEffect(() => {
+    if (!menu) return;
+
     console.log("🟢 useEffect 觸發了！");
-    debugger; // ✅ 這行會讓 DevTools 停住，幫助你檢查變數
+    debugger;
 
     async function fetchUserIdAndData() {
       console.log("🟢 fetchUserIdAndData 開始執行");
@@ -30,25 +33,28 @@ export default function ProfileClient() {
       console.log("🟢 取得的 Profile:", Profile);
 
       if (Profile?.userId) {
-        Cookies.set("userId", Profile?.userId, { expires: 7 });
-        Cookies.set("displayName", Profile?.displayName, { expires: 7 });
+        Cookies.set("userId", Profile.userId, { expires: 7 });
+        Cookies.set("displayName", Profile.displayName, { expires: 7 });
 
         try {
-          console.log("🟢 發送 API 請求... Profile?.userId");
+          console.log("🟢 發送 API 請求... userId + menu");
+
           const response = await axios.post(
             "https://line-notify-18ab.onrender.com/v1/api/lineHook/user/checkUser",
             {
-              userId: Profile?.userId,
+              userId: Profile.userId,
               channelId: "2007028490",
-              menu,
+              menu: menu, // ✅ 使用來自 state 的 menu
             }
           );
-          console.log(response.data?.id);
+
+          console.log("🟢 API response id:", response.data?.id);
+          const resMenu = response.data?.menu;
+          console.log("🟢 從後端回傳的 menu:", resMenu);
+
           if (response.data?.id && response.data) {
-            const { menu } = response.data;
-            console.log(menu);
-            if (menu == "sign") router.push(`/2007028490/notify_info`);
-            if (menu == "roadRecord") router.push(`/2007028490/roadRecord`);
+            if (resMenu === "sign") router.push(`/2007028490/notify_info`);
+            if (resMenu === "roadRecord") router.push(`/2007028490/roadRecord`);
           } else {
             router.push(`/2007028490/signIn`);
           }
@@ -62,11 +68,8 @@ export default function ProfileClient() {
     }
 
     fetchUserIdAndData();
-  }, [router]); // ✅ `router` 變更時重新執行
+  }, [router, menu]); // ✅ 把 menu 加入依賴陣列
 
-  if (loading) {
-    return <p> 載入中...</p>;
-  }
-
-  return <div className="p-6"></div>;
+  if (loading) return <p>載入中...</p>;
+  return <div className="p-4">Profile 資料處理完成</div>;
 }
