@@ -1,8 +1,8 @@
 "use client";
 
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import { closeWindow } from "@/utils/liff";
@@ -38,29 +38,28 @@ const test: Employee = {
 };
 
 const NotificationBindingPage = () => {
-  // 點選「是，解除綁定」按鈕時呼叫此函式
-  const [storedUserId, setStoredUserId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const userIdFromUrl = searchParams.get("userId");
+
   const [mockData, setMockData] = useState<Employee>(test);
 
   const handleRedirectAndClose = async () => {
-    // 執行其他邏輯，例如發送 API 請求後
     await closeWindow();
-    // 不建議在這裡直接呼叫 liff.closeWindow()，
-    // 讓 /close 頁面來處理視窗關閉邏輯會更穩定
   };
+
   useEffect(() => {
-    const userId = Cookies.get("userId");
-    setStoredUserId(userId || null);
+    if (!userIdFromUrl) return;
+
     async function fetchUserIdAndData() {
       try {
-        // ✅ 發送 API 請求
         const response = await axios.post(
           "https://line-notify-18ab.onrender.com/v1/api/lineHook/user/checkUser",
           {
-            userId: userId,
+            userId: userIdFromUrl,
             channelId: "2007028490",
           }
         );
+
         if (response.data) {
           setMockData(response.data);
         }
@@ -68,12 +67,16 @@ const NotificationBindingPage = () => {
         console.error("❌ API 請求失敗:", error);
       }
     }
+
     fetchUserIdAndData();
-  }, []);
+  }, [userIdFromUrl]);
+
   const handleUnbind = async () => {
+    if (!userIdFromUrl) return;
+
     try {
       await axios.delete(
-        `https://line-notify-18ab.onrender.com/v1/api/lineHook/user/${mockData.channelId}/${storedUserId}`
+        `https://line-notify-18ab.onrender.com/v1/api/lineHook/user/${mockData.channelId}/${userIdFromUrl}`
       );
       alert("解除成功");
       window.close();
@@ -122,11 +125,10 @@ const NotificationBindingPage = () => {
             否，保持綁定
           </Button>
         </div>
-        <h6
-          id="channel-id"
-          className="text-sm bg-gray-200 p-2 mt-4 text-center"
-        >
+        <h6 className="text-sm bg-gray-200 p-2 mt-4 text-center">
           ChannelId: 2007028490
+          <br />
+          使用者 ID: {userIdFromUrl || "未知"}
         </h6>
       </Card>
     </div>
