@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
@@ -34,8 +32,8 @@ const test: Employee = {
   dept: "",
   empId: "",
   name: "",
-  channelId: "2007028490",
-  userId: "U77bc55ff44a63d93b88e891780berror",
+  channelId: "",
+  userId: "",
   insertAt: "",
 };
 
