@@ -2,12 +2,10 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import { closeWindow } from "@/utils/liff";
 
-// 定義 TypeScript 型別
 type Employee = {
   id: string;
   company: string;
@@ -22,8 +20,7 @@ type Employee = {
   insertAt: string;
 };
 
-// 假資料
-const test: Employee = {
+const defaultUser: Employee = {
   id: "",
   company: "臺北客運",
   groupCode: "",
@@ -38,24 +35,29 @@ const test: Employee = {
 };
 
 const NotificationBindingPage = () => {
-  const searchParams = useSearchParams();
-  const userIdFromUrl = searchParams.get("userId");
+  const [userId, setUserId] = useState<string | null>(null);
+  const [mockData, setMockData] = useState<Employee>(defaultUser);
 
-  const [mockData, setMockData] = useState<Employee>(test);
-
-  const handleRedirectAndClose = async () => {
-    await closeWindow();
-  };
-
+  // ✅ CSR-safe 讀取網址參數
   useEffect(() => {
-    if (!userIdFromUrl) return;
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      const uid = url.searchParams.get("userId");
+      setUserId(uid);
+      console.log("🔍 目前網址的 userId:", uid);
+    }
+  }, []);
+
+  // ✅ 拿使用者資料
+  useEffect(() => {
+    if (!userId) return;
 
     async function fetchUserIdAndData() {
       try {
         const response = await axios.post(
           "https://line-notify-18ab.onrender.com/v1/api/lineHook/user/checkUser",
           {
-            userId: userIdFromUrl,
+            userId,
             channelId: "2007028490",
           }
         );
@@ -69,20 +71,24 @@ const NotificationBindingPage = () => {
     }
 
     fetchUserIdAndData();
-  }, [userIdFromUrl]);
+  }, [userId]);
 
   const handleUnbind = async () => {
-    if (!userIdFromUrl) return;
+    if (!userId) return;
 
     try {
       await axios.delete(
-        `https://line-notify-18ab.onrender.com/v1/api/lineHook/user/${mockData.channelId}/${userIdFromUrl}`
+        `https://line-notify-18ab.onrender.com/v1/api/lineHook/user/${mockData.channelId}/${userId}`
       );
       alert("解除成功");
       window.close();
     } catch (error) {
       console.error("解除綁定失敗：", error);
     }
+  };
+
+  const handleRedirectAndClose = async () => {
+    await closeWindow();
   };
 
   return (
@@ -111,6 +117,7 @@ const NotificationBindingPage = () => {
             <li>姓名：{mockData.name}</li>
           </ul>
         </CardContent>
+
         <div className="mt-6 flex flex-col space-y-2">
           <Button
             className="w-full bg-green-500 text-white py-2 rounded font-extrabold hover:bg-green-600"
@@ -125,10 +132,11 @@ const NotificationBindingPage = () => {
             否，保持綁定
           </Button>
         </div>
+
         <h6 className="text-sm bg-gray-200 p-2 mt-4 text-center">
           ChannelId: 2007028490
           <br />
-          使用者 ID: {userIdFromUrl || "未知"}
+          使用者 ID: {userId || "未知"}
         </h6>
       </Card>
     </div>
