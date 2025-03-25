@@ -10,7 +10,7 @@ export default function ProfileClient() {
   const router = useRouter(); // ✅ 設定 Next.js router
   const searchParams = useSearchParams();
   const menu = searchParams.get("menu");
-  alert(menu);
+  console.log(menu);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
