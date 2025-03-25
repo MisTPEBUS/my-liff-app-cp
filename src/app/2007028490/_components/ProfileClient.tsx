@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation"; // ✅ 用來導向不同頁面
 import Cookies from "js-cookie"; // ✅ 讀取 & 設定 Cookie
 import axios from "axios";
 import { getUserProfile, initLiff } from "@/utils/liff";
-
+import { useSearchParams } from "next/navigation";
 export default function ProfileClient() {
   const router = useRouter(); // ✅ 設定 Next.js router
-
+  const searchParams = useSearchParams();
+  const menu = searchParams.get("menu");
+  alert(menu);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -3,7 +3,8 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const violations = [
   "闖紅燈",
@@ -30,7 +31,17 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function ViolationForm() {
   const [submitStatus, setSubmitStatus] = useState<string>("");
+  const [storedUserId, setStoredUserId] = useState<string | null>(null);
+  const [StoredDisplayName, setStoredDisplayName] = useState<string | null>(
+    null
+  );
 
+  useEffect(() => {
+    const userId = Cookies.get("userId");
+    const displayName = Cookies.get("displayName");
+    setStoredUserId(userId ?? "");
+    setStoredDisplayName(displayName ?? "");
+  }, []);
   const {
     register,
     handleSubmit,
@@ -126,7 +137,9 @@ export default function ViolationForm() {
         <button className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
           提交
         </button>
-
+        <h6 id="channel-id" className="text-sm bg-gray-200 p-2 mt-4">
+          channelId : 2007028490-user:{storedUserId}-name:{StoredDisplayName}
+        </h6>
         {submitStatus && (
           <p className="text-center mt-2 font-semibold">{submitStatus}</p>
         )}
