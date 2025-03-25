@@ -45,13 +45,17 @@ export default function ProfileClient() {
           );
           console.log(response.data?.id);
           if (response.data?.id && response.data) {
-            const { menu } = response.data;
-            router.push(`/2007028490/roadRecord?userId=${Profile?.userId}`);
+            if (menu == "sign")
+              router.push(
+                `/2007028490/roadCheck/detail?userId=${Profile?.userId}`
+              );
           } else {
-            router.push(`/2007028490/signIn?userId=${Profile?.userId}`);
+            router.push(
+              `/2007028490/roadCheck/detail?userId=${Profile?.userId}`
+            );
           }
         } catch (error) {
-          router.push(`/2007028490/signIn?userId=${Profile?.userId}`);
+          router.push(`/2007028490/roadCheck/detail?userId=${Profile?.userId}`);
           console.error("❌ API 請求失敗:", error);
         }
       }
