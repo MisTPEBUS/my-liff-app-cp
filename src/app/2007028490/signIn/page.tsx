@@ -42,6 +42,7 @@ export default function TaipeiBusBinding() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
