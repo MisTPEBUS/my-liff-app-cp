@@ -9,9 +9,15 @@ import { useSearchParams } from "next/navigation";
 export default function ProfileClient() {
   const router = useRouter(); // ✅ 設定 Next.js router
   const searchParams = useSearchParams();
-  const menu = searchParams.get("menu");
-  console.log(menu);
+  const [menu, setMenu] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const value = searchParams.get("menu");
+    setMenu(value);
+    console.log("✅ menu 參數為：", value);
+  }, [searchParams]);
 
   useEffect(() => {
     console.log("🟢 useEffect 觸發了！");
