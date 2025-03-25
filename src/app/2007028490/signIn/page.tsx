@@ -67,7 +67,11 @@ export default function TaipeiBusBinding() {
     const displayName = Cookies.get("displayName");
     setStoredUserId(userId ?? "");
     setStoredDisplayName(displayName ?? "");
-  }, []);
+    reset((prev) => ({
+      ...prev,
+      name: displayName ?? "",
+    }));
+  }, [reset]);
 
   const onSubmit = async (data: FormData) => {
     // 組裝 payload
