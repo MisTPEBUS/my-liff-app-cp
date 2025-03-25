@@ -42,7 +42,7 @@ export default function ProfileClient() {
               channelId: "2007028490",
             }
           );
-
+          console.log(response.data?.id);
           if (response.data?.id && response.data) {
             console.log(menu);
             /*  if(menu =="sign") router.push(`/2007028490/notify_info`);
