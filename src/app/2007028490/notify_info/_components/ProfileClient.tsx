@@ -45,12 +45,13 @@ export default function ProfileClient() {
           );
           console.log(response.data?.id);
           if (response.data?.id && response.data) {
-            if (menu == "sign") router.push(`/2007028490/notify_info/detail`);
+            if (menu == "sign")
+              router.push(`/2007028490/notify_info/detail/${Profile?.userId}`);
           } else {
-            router.push(`/2007028490/notify_info/detail`);
+            router.push(`/2007028490/notify_info/detail/${Profile?.userId}`);
           }
         } catch (error) {
-          router.push(`/2007028490/notify_info/detail`);
+          router.push(`/2007028490/notify_info/detail/${Profile?.userId}`);
           console.error("❌ API 請求失敗:", error);
         }
       }
