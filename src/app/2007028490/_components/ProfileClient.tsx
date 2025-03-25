@@ -1,81 +1,72 @@
-"use client";
+"use client"; // ✅ 必須加上這行，讓 Next.js 知道這是 Client Component
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import { useRouter } from "next/navigation"; // ✅ 用來導向不同頁面
+import Cookies from "js-cookie"; // ✅ 讀取 & 設定 Cookie
 import axios from "axios";
-import { initLiff, getUserProfile } from "@/utils/liff"; // ← 你自己 utils 中的函式
-
+import { getUserProfile, initLiff } from "@/utils/liff";
+import { useSearchParams } from "next/navigation";
 export default function ProfileClient() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const router = useRouter(); // ✅ 設定 Next.js router
+  const searchParams = useSearchParams();
   const [menu, setMenu] = useState<string | null>(null);
 
-  // ✅ 第一步：從網址取得 menu 參數（原生方式）
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const url = new URL(window.location.href);
-      const menuParam = url.searchParams.get("menu");
-      setMenu(menuParam);
-      console.log("✅ 正確取得 menu:", menuParam);
-    }
-  }, []);
+    const value = searchParams.get("menu");
+    setMenu(value);
+    console.log("✅ menu 參數為：", value);
+  }, [searchParams]);
 
-  // ✅ 第二步：當 menu 有值後再初始化 LIFF + 呼叫 API
   useEffect(() => {
-    if (!menu) return;
+    console.log("🟢 useEffect 觸發了！");
+    debugger; // ✅ 這行會讓 DevTools 停住，幫助你檢查變數
 
-    async function fetchUser() {
-      try {
-        console.log("🟢 初始化 LIFF...");
-        await initLiff();
+    async function fetchUserIdAndData() {
+      console.log("🟢 fetchUserIdAndData 開始執行");
+      await initLiff();
+      const Profile = await getUserProfile();
+      console.log("🟢 取得的 Profile:", Profile);
 
-        const profile = await getUserProfile();
-        console.log("🟢 取得的 LIFF 使用者資料:", profile);
+      if (Profile?.userId) {
+        Cookies.set("userId", Profile?.userId, { expires: 7 });
+        Cookies.set("displayName", Profile?.displayName, { expires: 7 });
 
-        if (profile?.userId) {
-          Cookies.set("userId", profile.userId, { expires: 7 });
-          Cookies.set("displayName", profile.displayName, { expires: 7 });
-
+        try {
+          console.log("🟢 發送 API 請求... Profile?.userId");
           const response = await axios.post(
             "https://line-notify-18ab.onrender.com/v1/api/lineHook/user/checkUser",
             {
-              userId: profile.userId,
+              userId: Profile?.userId,
               channelId: "2007028490",
-              menu: menu,
+              menu,
             }
           );
-
-          const resMenu = response.data?.menu;
-          const hasUser = response.data?.id;
-
-          console.log("🟢 後端回傳 menu:", resMenu);
-          console.log("🟢 後端回傳 id:", hasUser);
-
-          if (hasUser) {
-            if (resMenu === "sign") router.push("/2007028490/notify_info");
-            else if (resMenu === "roadRecord")
-              router.push("/2007028490/roadRecord");
-            else router.push("/2007028490/notify_info"); // 預設 fallback
+          console.log(response.data?.id);
+          if (response.data?.id && response.data) {
+            const { menu } = response.data;
+            console.log(menu);
+            if (menu == "sign") router.push(`/2007028490/notify_info`);
+            if (menu == "roadRecord") router.push(`/2007028490/roadRecord`);
           } else {
-            router.push("/2007028490/signIn");
+            router.push(`/2007028490/signIn`);
           }
-        } else {
-          console.warn("⚠️ 無法取得 userId");
-          router.push("/2007028490/signIn");
+        } catch (error) {
+          router.push(`/2007028490/signIn`);
+          console.error("❌ API 請求失敗:", error);
         }
-      } catch (error) {
-        console.error("❌ 發生錯誤:", error);
-        router.push("/2007028490/signIn");
-      } finally {
-        setLoading(false);
       }
+
+      setLoading(false);
     }
 
-    fetchUser();
-  }, [menu, router]);
+    fetchUserIdAndData();
+  }, [router]); // ✅ `router` 變更時重新執行
 
-  if (loading) return <p className="p-4">🔄 登入中，請稍候...</p>;
+  if (loading) {
+    return <p> 載入中...</p>;
+  }
 
-  return <div className="p-4">✅ 處理完成</div>;
+  return <div className="p-6"></div>;
 }
