@@ -44,7 +44,8 @@ export default function ProfileClient() {
           );
 
           if (response.data?.id && response.data) {
-            router.push(`/2007028490/notify_info`);
+            if (menu == "sign") router.push(`/2007028490/notify_info`);
+            if (menu == "roadRecord") router.push(`/2007028490/roadRecord`);
           } else {
             router.push(`/2007028490/signIn`);
           }
