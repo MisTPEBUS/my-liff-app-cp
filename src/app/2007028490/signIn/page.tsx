@@ -5,6 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { Button } from "@/app/components/ui/button";
+import { closeWindow } from "@/utils/liff";
 
 // 定義表單 schema
 const formSchema = z.object({
@@ -54,7 +56,12 @@ export default function TaipeiBusBinding() {
       name: StoredDisplayName ?? "",
     },
   });
-
+  const handleRedirectAndClose = async () => {
+    // 執行其他邏輯，例如發送 API 請求後
+    await closeWindow();
+    // 不建議在這裡直接呼叫 liff.closeWindow()，
+    // 讓 /close 頁面來處理視窗關閉邏輯會更穩定
+  };
   useEffect(() => {
     const userId = Cookies.get("userId");
     const displayName = Cookies.get("displayName");
@@ -236,7 +243,12 @@ export default function TaipeiBusBinding() {
         >
           送出表單
         </button>
-
+        <Button
+          className="w-full bg-gray-300 hover:bg-gray-400 py-2 rounded font-bold"
+          onClick={handleRedirectAndClose}
+        >
+          否，保持綁定
+        </Button>
         <h6 id="channel-id" className="text-sm bg-gray-200 p-2 mt-4">
           channelId : 2007028490-user:{storedUserId}-name:{StoredDisplayName}
         </h6>
