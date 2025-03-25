@@ -70,7 +70,7 @@ export default function TaipeiBusBinding() {
       job: data.job || "",
       dept: data.dept,
       empId: data.empId,
-      name: data.name || "",
+      name: StoredDisplayName || "",
       channelId: "2007028490",
       userId: storedUserId || "",
     };
