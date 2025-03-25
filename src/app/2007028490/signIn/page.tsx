@@ -48,7 +48,7 @@ export default function TaipeiBusBinding() {
       company: "臺北客運",
       dept: "",
       job: "",
-      projectGroup: "",
+      projectGroup: "營收通知系統",
       empId: "",
       name: StoredDisplayName ?? "",
     },
