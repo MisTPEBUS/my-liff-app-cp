@@ -98,12 +98,14 @@ export default function TaipeiBusBinding() {
           body: JSON.stringify(payload),
         }
       );
-      alert("綁定成功");
+
       if (!response.ok) {
         throw new Error("請求失敗");
       }
       const result = await response.json();
       console.log("API 回應：", result);
+      alert("綁定成功");
+      await closeWindow();
     } catch (error) {
       console.error("送出失敗：", error);
     }
