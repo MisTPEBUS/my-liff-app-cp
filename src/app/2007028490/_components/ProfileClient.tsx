@@ -40,15 +40,12 @@ export default function ProfileClient() {
             {
               userId: Profile?.userId,
               channelId: "2007028490",
-              menu,
+              menu: "",
             }
           );
           console.log(response.data?.id);
           if (response.data?.id && response.data) {
-            const { menu } = response.data;
-            console.log(menu);
-            if (menu == "sign") router.push(`/2007028490/notify_info`);
-            if (menu == "roadRecord") router.push(`/2007028490/roadRecord`);
+            router.push(`/2007028490/notify_info`);
           } else {
             router.push(`/2007028490/signIn`);
           }
