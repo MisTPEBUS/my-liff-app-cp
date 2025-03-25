@@ -9,16 +9,24 @@ import { getUserProfile, initLiff } from "@/utils/liff";
 export default function ProfileClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const run = async () => {
-      const menu = searchParams.get("menu"); // ✅ 直接在這邊抓
-      console.log("✅ 取得 menu 參數：", menu);
+      // ✅ 1. 嘗試從 URL 抓 menu
+      let menu = searchParams.get("menu");
+
+      if (menu) {
+        console.log("✅ 從 searchParams 抓到 menu：", menu);
+        Cookies.set("menu", menu, { expires: 1 }); // 保存一天
+      } else {
+        // ✅ 2. 從 Cookie 回傳
+        menu = Cookies.get("menu") || null;
+        console.log("🟡 從 Cookie 拿到 menu：", menu);
+      }
 
       if (!menu) {
-        console.warn("⚠️ menu 為 null，導回首頁或顯示錯誤");
+        console.warn("❌ 完全沒有 menu，導回首頁");
         router.push("/");
         return;
       }
