@@ -44,12 +44,17 @@ export default function ProfileClient() {
           );
 
           if (response.data?.id && response.data) {
+            console.log(1);
+            console.log(menu);
+            console.log(menu == "sign");
             if (menu == "sign") router.push(`/2007028490/notify_info`);
             if (menu == "roadRecord") router.push(`/2007028490/roadRecord`);
           } else {
+            console.log(2);
             router.push(`/2007028490/signIn`);
           }
         } catch (error) {
+          console.log(3);
           router.push(`/2007028490/signIn`);
           console.error("❌ API 請求失敗:", error);
         }
