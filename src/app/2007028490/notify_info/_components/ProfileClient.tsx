@@ -46,12 +46,18 @@ export default function ProfileClient() {
           console.log(response.data?.id);
           if (response.data?.id && response.data) {
             if (menu == "sign")
-              router.push(`/2007028490/notify_info/detail/${Profile?.userId}`);
+              router.push(
+                `/2007028490/notify_info/detail?userId=${Profile?.userId}`
+              );
           } else {
-            router.push(`/2007028490/notify_info/detail/${Profile?.userId}`);
+            router.push(
+              `/2007028490/notify_info/detail?userId=${Profile?.userId}`
+            );
           }
         } catch (error) {
-          router.push(`/2007028490/notify_info/detail/${Profile?.userId}`);
+          router.push(
+            `/2007028490/notify_info/detail?userId=${Profile?.userId}`
+          );
           console.error("❌ API 請求失敗:", error);
         }
       }
