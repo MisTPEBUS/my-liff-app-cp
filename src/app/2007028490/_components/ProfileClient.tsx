@@ -40,6 +40,7 @@ export default function ProfileClient() {
             {
               userId: Profile?.userId,
               channelId: "2007028490",
+              menu,
             }
           );
           console.log(response.data?.id);
