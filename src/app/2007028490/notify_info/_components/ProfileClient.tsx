@@ -10,13 +10,12 @@ export default function ProfileClient() {
   const router = useRouter(); // ✅ 設定 Next.js router
   const searchParams = useSearchParams();
   const [menu, setMenu] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const value = searchParams.get("userId");
+    const value = searchParams.get("menu");
     setMenu(value);
-    setUserId(value);
     console.log("✅ menu 參數為：", value);
   }, [searchParams]);
 
