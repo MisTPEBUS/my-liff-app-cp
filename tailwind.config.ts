@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
+import tailwindAnimate from "tailwindcss-animate";
 
-export default {
-  darkMode: "class",
+const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,13 +9,37 @@ export default {
   ],
   theme: {
     container: {
-      center: true, // 讓 container 元素水平置中
+      center: true,
       screens: {
-        sm: "375px",
-        md: "600px",
+        "2xl": "1296px",
       },
     },
     extend: {
+      fontFamily: {
+        noto: ["var(--font-noto-sans)"],
+      },
+      textColor: {
+        DEFAULT: "#18181B",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%, 100%": { opacity: "0" },
+          "50%": { opacity: "1" },
+        },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "85" },
+        },
+        "accordion-up": {
+          from: { height: "85" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 3s infinite",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -28,11 +52,17 @@ export default {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#40E0D0",
+          hover: "#079A91",
+          dark: "#0F514E",
+          light: "#D6F4F0",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "#FE4710",
+          hover: "#EF2D07",
+          dark: "#EF2D07",
+          light: "#FFEFD8",
           foreground: "hsl(var(--secondary-foreground))",
         },
         muted: {
@@ -48,8 +78,8 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
         },
         border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        input: "#D4D4D8",
+        ring: "#0F514E",
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
@@ -57,13 +87,37 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        black: {
+          DEFAULT: "#18181B", //primary-text
+          foreground: "hsl(var(--black-foreground))",
+        },
+        white: {
+          DEFAULT: "#FDFBF8", //default-background, white text
+          pure: "#FFFFFF",
+          foreground: "hsl(var(--white-foreground))",
+        },
+        gray: {
+          DEFAULT: "#71717A", //secondary-text
+          100: "#F4F4F5", //background
+          200: "#D4D4D8", //input border, divider
+          400: "#A1A1AA", //control icon, placeholder
+          500: "#71717A", // icon-indicator
+          600: "#52525B", //input/select text
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        "gradient-to-top-desktop":
+          "linear-gradient(to top, #d6f4f0 267px, transparent 0%)",
+        "gradient-to-top-mobile":
+          "linear-gradient(to top, #d6f4f0 363px, transparent 0%)",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+  plugins: [tailwindAnimate],
+};
+export default config;

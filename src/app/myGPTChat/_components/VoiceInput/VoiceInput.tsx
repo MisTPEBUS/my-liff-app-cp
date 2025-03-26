@@ -69,9 +69,10 @@ const VoiceInput = () => {
         className="w-full p-4 border border-gray-300 rounded-xl resize-none min-h-[120px] text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         placeholder="請開始語音輸入..."
       />
+
       <Button
         onClick={handleVoiceInput}
-        className="w-full bg-green-500 text-white text-xl font-extrabold py-4 rounded-2xl hover:bg-green-600 transition-colors"
+        className="w-full text-3xl bg-gray-500 text-white  font-extrabold py-4 rounded-2xl hover:bg-green-600 transition-colors"
       >
         開始語音輸入
       </Button>
