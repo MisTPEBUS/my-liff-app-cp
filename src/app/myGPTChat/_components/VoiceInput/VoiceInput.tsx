@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/app/components/ui/button";
 import { useRef } from "react";
 
 type SpeechRecognitionType = {
@@ -43,7 +44,7 @@ const VoiceInput = () => {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = "zh-TW"; // 語言設定為繁體中文
+    recognition.lang = "zh-TW";
     recognition.continuous = false;
     recognition.interimResults = false;
 
@@ -54,26 +55,26 @@ const VoiceInput = () => {
       }
     };
 
-    recognition.onerror = (_event: SpeechRecognitionErrorEvent) => {
-      console.error("語音辨識錯誤:", _event.error);
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      console.error("語音辨識錯誤:", event.error);
     };
 
     recognition.start();
   };
 
   return (
-    <div className="flex flex-col items-start gap-4 p-4">
+    <div className="w-full max-w-md mx-auto p-4 sm:p-6 bg-white rounded-xl shadow-md space-y-4">
       <textarea
         ref={textRef}
-        className="w-full p-3 border rounded-lg resize-none min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full p-4 border border-gray-300 rounded-xl resize-none min-h-[120px] text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         placeholder="請開始語音輸入..."
       />
-      <button
+      <Button
         onClick={handleVoiceInput}
-        className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+        className="w-full bg-green-500 text-white text-xl font-extrabold py-4 rounded-2xl hover:bg-green-600 transition-colors"
       >
-        🎤 開始語音輸入
-      </button>
+        開始語音輸入
+      </Button>
     </div>
   );
 };

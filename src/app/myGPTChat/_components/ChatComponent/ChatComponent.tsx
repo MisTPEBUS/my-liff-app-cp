@@ -37,7 +37,7 @@ export default function ChatComponent() {
 
   return (
     <div className="border rounded shadow p-4 w-full max-w-md bg-white flex flex-col h-[600px]">
-      <h1 className="text-center text-xl font-semibold">我的OpenAI 聊天室</h1>
+      <h1 className="text-center text-xl font-semibold">客服聊天室</h1>
       <hr className="my-2" />
       <div ref={chatRef} className="overflow-auto flex-1 mb-4">
         {messages.map((msg, index) => (
