@@ -1,6 +1,8 @@
 "use client";
+
 import { Button } from "@/app/components/ui/button";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+// shadcn 元件路徑，依你實際放置位置調整
 
 type SpeechRecognitionType = {
   new (): SpeechRecognitionInstance;
@@ -14,6 +16,7 @@ interface SpeechRecognitionInstance {
   stop: () => void;
   onresult: ((event: SpeechRecognitionEvent) => void) | null;
   onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  onend: (() => void) | null;
 }
 
 type SpeechRecognitionEvent = Event & {
@@ -26,6 +29,7 @@ type SpeechRecognitionErrorEvent = Event & {
 
 const VoiceInput = () => {
   const textRef = useRef<HTMLTextAreaElement>(null);
+  const [isRecording, setIsRecording] = useState(false);
 
   const handleVoiceInput = () => {
     const SpeechRecognition =
@@ -55,26 +59,39 @@ const VoiceInput = () => {
       }
     };
 
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.error("語音辨識錯誤:", event.error);
+    recognition.onerror = (_event: SpeechRecognitionErrorEvent) => {
+      console.error("語音辨識錯誤");
+      setIsRecording(false);
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
     };
 
     recognition.start();
+    setIsRecording(true);
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 sm:p-6 bg-white rounded-xl shadow-md space-y-4">
+    <div className="flex flex-col items-start gap-4 p-4">
       <textarea
         ref={textRef}
-        className="w-full p-4 border border-gray-300 rounded-xl resize-none min-h-[120px] text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        className="w-full p-3 border rounded-2xl resize-none min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="請開始語音輸入..."
       />
-
       <Button
         onClick={handleVoiceInput}
-        className="w-full text-3xl bg-gray-500 text-white  font-extrabold py-4 rounded-2xl hover:bg-green-600 transition-colors"
+        className="w-full text-3xl bg-gray-500 text-white font-extrabold py-4 rounded-2xl hover:bg-green-600 transition-colors"
+        disabled={isRecording}
       >
-        開始語音輸入
+        {isRecording ? (
+          <div className="flex items-center gap-2">
+            正在錄音中...
+            <span className="text-red-400 text-2xl animate-pulse">●</span>
+          </div>
+        ) : (
+          "開始語音輸入"
+        )}
       </Button>
     </div>
   );
