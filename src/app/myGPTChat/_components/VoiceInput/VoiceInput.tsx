@@ -59,8 +59,8 @@ const VoiceInput = () => {
       }
     };
 
-    recognition.onerror = (_event: SpeechRecognitionErrorEvent) => {
-      console.error("語音辨識錯誤");
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      console.error("語音辨識錯誤:", event.error);
       setIsRecording(false);
     };
 
