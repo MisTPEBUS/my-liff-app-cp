@@ -1,4 +1,4 @@
-import ChatComponent from "./_components/ChatComponent/ChatComponent";
+/* import ChatComponent from "./_components/ChatComponent/ChatComponent"; */
 import VoiceInput from "./_components/VoiceInput/VoiceInput";
 
 export const myGPTChat = () => {
