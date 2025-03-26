@@ -1,12 +1,26 @@
 "use client";
 import { useRef } from "react";
 
+type SpeechRecognitionType = {
+  new (): SpeechRecognitionInstance;
+};
+
+interface SpeechRecognitionInstance {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  start: () => void;
+  stop: () => void;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+}
+
 type SpeechRecognitionEvent = Event & {
   results: SpeechRecognitionResultList;
 };
+
 type SpeechRecognitionErrorEvent = Event & {
   error: string;
-  message: string;
 };
 
 const VoiceInput = () => {
@@ -14,8 +28,14 @@ const VoiceInput = () => {
 
   const handleVoiceInput = () => {
     const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+      (
+        window as unknown as {
+          SpeechRecognition: SpeechRecognitionType;
+          webkitSpeechRecognition: SpeechRecognitionType;
+        }
+      ).SpeechRecognition ||
+      (window as unknown as { webkitSpeechRecognition: SpeechRecognitionType })
+        .webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
       alert("此瀏覽器不支援語音辨識，請使用 Chrome");
