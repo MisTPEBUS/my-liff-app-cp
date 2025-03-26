@@ -30,6 +30,6 @@ export const openAiRequest = async (messages: Message[]): Promise<string> => {
 
     return data.choices[0].message.content.trim();
   } catch (error) {
-    return "很抱歉，我發生錯誤了。";
+    return `很抱歉，我發生錯誤了。${error}`;
   }
 };
