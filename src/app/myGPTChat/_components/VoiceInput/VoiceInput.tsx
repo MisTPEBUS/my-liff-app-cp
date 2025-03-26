@@ -2,7 +2,6 @@
 
 import { Button } from "@/app/components/ui/button";
 import { useRef, useState } from "react";
-// shadcn 元件路徑，依你實際放置位置調整
 
 type SpeechRecognitionType = {
   new (): SpeechRecognitionInstance;
