@@ -18,7 +18,9 @@ const ProjectsLayout = ({ params, children }: ChildrenProps) => {
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Header */}
       <header className="fixed top-0 left-0 w-full bg-white shadow z-50 h-16 flex items-center justify-center">
-        <div className="text-lg font-semibold"> 智能小客服 {id}</div>
+        <div className="container px-4 flex justify-center">
+          <div className="text-lg font-semibold">智能小客服</div>
+        </div>
       </header>
 
       {/* Spacer for Header */}

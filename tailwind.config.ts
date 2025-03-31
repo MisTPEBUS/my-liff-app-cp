@@ -7,11 +7,19 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class", // ✅ 支援 class-based dark mode
   theme: {
     container: {
-      center: true,
+      center: true, // ✅ 預設置中
+      padding: {
+        DEFAULT: "1rem", // ✅ 全斷點預設 padding
+        sm: "1rem",
+        lg: "2rem",
+        xl: "2.5rem",
+        "2xl": "3rem",
+      },
       screens: {
-        "2xl": "1296px",
+        sm: "640px",
       },
     },
     extend: {
@@ -88,21 +96,21 @@ const config: Config = {
           "5": "hsl(var(--chart-5))",
         },
         black: {
-          DEFAULT: "#18181B", //primary-text
+          DEFAULT: "#18181B",
           foreground: "hsl(var(--black-foreground))",
         },
         white: {
-          DEFAULT: "#FDFBF8", //default-background, white text
+          DEFAULT: "#FDFBF8",
           pure: "#FFFFFF",
           foreground: "hsl(var(--white-foreground))",
         },
         gray: {
-          DEFAULT: "#71717A", //secondary-text
-          100: "#F4F4F5", //background
-          200: "#D4D4D8", //input border, divider
-          400: "#A1A1AA", //control icon, placeholder
-          500: "#71717A", // icon-indicator
-          600: "#52525B", //input/select text
+          DEFAULT: "#71717A",
+          100: "#F4F4F5",
+          200: "#D4D4D8",
+          400: "#A1A1AA",
+          500: "#71717A",
+          600: "#52525B",
         },
       },
       borderRadius: {
@@ -120,4 +128,5 @@ const config: Config = {
   },
   plugins: [tailwindAnimate],
 };
+
 export default config;

@@ -34,6 +34,51 @@ export type LineNotifyPayload = {
   userId: string; // 從 cookies 讀取的 userId
 };
 
+const departmentOptions: Record<string, string[]> = {
+  臺北客運: [
+    "業務部",
+    "資訊中心",
+    "四海站",
+    "南雅站",
+    "中和站",
+    "新店站",
+    "木柵站",
+    "樹林站",
+    "三峽一站",
+    "歡仔園站",
+    "民生站",
+    "三峽二站",
+    "板橋後站",
+    "中華站",
+    "五福站",
+    "林口站",
+    "蘆洲站",
+    "江子翠站",
+    "瑞芳站",
+  ],
+  首都客運: [
+    "業務部",
+    "資訊中心",
+    "三重一站",
+    "二重站",
+    "新莊一站",
+    "新莊二站",
+    "三峽一站",
+    "內湖站",
+    "東園站",
+    "士林站",
+    "南港站",
+    "經貿站",
+    "汐止一站",
+    "社子站",
+    "汐止二站",
+    "安康站",
+    "五結停車場",
+    "八斗子站",
+    "三重二站",
+  ],
+};
+
 export default function TaipeiBusBinding() {
   const [storedUserId, setStoredUserId] = useState<string | null>(null);
   const [StoredDisplayName, setStoredDisplayName] = useState<string | null>(
@@ -44,6 +89,7 @@ export default function TaipeiBusBinding() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     reset,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -56,6 +102,8 @@ export default function TaipeiBusBinding() {
       name: StoredDisplayName ?? "",
     },
   });
+  const selectedCompany = watch("company"); // 加在 useForm 之後
+  const departments = departmentOptions[selectedCompany] || [];
   const handleRedirectAndClose = async () => {
     // 執行其他邏輯，例如發送 API 請求後
     await closeWindow();
@@ -114,7 +162,7 @@ export default function TaipeiBusBinding() {
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white border rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-4 text-center text-orange-500">
-        臺北客運通知綁定
+        首都客運集團通知綁定
       </h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -124,9 +172,7 @@ export default function TaipeiBusBinding() {
             公司名稱 <span className="text-red-500">*</span>
           </label>
           <select
-            // 使用 defaultValue 保持預設值，並將元件設為 disabled
-            defaultValue="臺北客運"
-            disabled
+            defaultValue=""
             {...register("company", { required: "請選擇公司" })}
             className="w-full p-2 border rounded bg-white appearance-none pr-8"
           >
@@ -151,26 +197,14 @@ export default function TaipeiBusBinding() {
             defaultValue=""
             {...register("dept", { required: "請選擇部門" })}
             className="w-full p-2 border rounded bg-white appearance-none pr-8"
+            disabled={!selectedCompany}
           >
-            <option value="業務部"> 業務部</option>
-            <option value="資訊中心">資訊中心</option>
-            <option value="四海站"> 四海站</option>
-            <option value="南雅站"> 南雅站</option>
-            <option value="中和站"> 中和站</option>
-            <option value="新店站"> 新店站</option>
-            <option value="木柵站"> 木柵站</option>
-            <option value="樹林站"> 樹林站</option>
-            <option value="三峽一站">三峽一站</option>
-            <option value="歡仔園站">歡仔園站</option>
-            <option value="民生站"> 民生站</option>
-            <option value="三峽二站">三峽二站</option>
-            <option value="板橋後站">板橋後站</option>
-            <option value="中華站"> 中華站</option>
-            <option value="五福站"> 五福站</option>
-            <option value="林口站"> 林口站</option>
-            <option value="蘆洲站"> 蘆洲站</option>
-            <option value="江子翠站">江子翠站</option>
-            <option value="瑞芳站"> 瑞芳站</option>
+            <option value="">請選擇部門</option>
+            {departments.map((dept) => (
+              <option key={dept} value={dept}>
+                {dept}
+              </option>
+            ))}
           </select>
           <div className="absolute right-2 top-10 pointer-events-none">▼</div>
           {errors.dept && (
@@ -208,6 +242,7 @@ export default function TaipeiBusBinding() {
         <div>
           <label className="block font-semibold mb-2">專案群組</label>
           <input
+            disabled
             type="text"
             {...register("projectGroup")}
             className="w-full p-2 border rounded"
