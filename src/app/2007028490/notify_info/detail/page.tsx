@@ -49,7 +49,7 @@ const NotificationBindingPage = () => {
   }, []);
 
   // ✅ 拿使用者資料
-  useEffect(() => {
+  /*   useEffect(() => {
     if (!userId) return;
 
     async function fetchUserIdAndData() {
@@ -71,7 +71,7 @@ const NotificationBindingPage = () => {
     }
 
     fetchUserIdAndData();
-  }, [userId]);
+  }, [userId]); */
 
   const handleUnbind = async () => {
     if (!userId) return;
