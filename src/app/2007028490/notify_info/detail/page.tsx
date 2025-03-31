@@ -59,7 +59,6 @@ const NotificationBindingPage = () => {
           {
             userId,
             channelId: "2007028490",
-            menu: "",
           }
         );
 
