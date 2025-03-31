@@ -81,7 +81,7 @@ const NotificationBindingPage = () => {
         `https://line-notify-18ab.onrender.com/v1/api/lineHook/user/${mockData.channelId}/${userId}`
       );
       alert("解除成功");
-      window.close();
+      await closeWindow();
     } catch (error) {
       console.error("解除綁定失敗：", error);
     }
