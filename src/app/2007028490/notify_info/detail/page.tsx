@@ -38,6 +38,7 @@ const NotificationBindingPage = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [mockData, setMockData] = useState<Employee>(defaultUser);
 
+  setMockData(defaultUser);
   // ✅ CSR-safe 讀取網址參數
   useEffect(() => {
     if (typeof window !== "undefined") {
