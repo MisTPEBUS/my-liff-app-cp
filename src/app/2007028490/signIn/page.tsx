@@ -124,8 +124,8 @@ export default function TaipeiBusBinding() {
   const onSubmit = async (data: FormData) => {
     // 組裝 payload
     const payload: LineNotifyPayload = {
-      company: "臺北客運",
-      groupCode: "營收通知系統",
+      company: data.company,
+      groupCode: data.projectGroup ?? "營收通知系統",
       phone: "",
       job: data.job || "",
       dept: data.dept,
