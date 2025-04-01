@@ -92,10 +92,16 @@ export default function ViolationForm() {
         </CardContent>
 
         <div className="mt-6 flex flex-col space-y-2">
-          <Button className="w-full bg-green-500 text-white py-2 rounded font-extrabold hover:bg-green-600">
+          <Button
+            onClick={handleUnbind}
+            className="w-full bg-green-500 text-white py-2 rounded font-extrabold hover:bg-green-600"
+          >
             是，解除綁定
           </Button>
-          <Button className="w-full bg-gray-300 hover:bg-gray-400 py-2 rounded font-bold">
+          <Button
+            onClick={handleRedirectAndClose}
+            className="w-full bg-gray-300 hover:bg-gray-400 py-2 rounded font-bold"
+          >
             否，保持綁定
           </Button>
         </div>
