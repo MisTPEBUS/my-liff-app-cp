@@ -44,7 +44,9 @@ export default function ProfileClient() {
           );
           console.log(response.data?.id);
           if (response.data?.id && response.data) {
-            router.push(`/2007028490/notify_info`);
+            router.push(
+              `/2007028490/notify_info/detail?userId=${Profile?.userId}`
+            );
           } else {
             router.push(`/2007028490/signIn`);
           }
