@@ -73,7 +73,7 @@ const departmentOptions: Record<string, string[]> = {
     "社子站",
     "汐止二站",
     "安康站",
-    "五結停車場",
+    "羅東站",
     "八斗子站",
     "三重二站",
     "首都板橋站",
