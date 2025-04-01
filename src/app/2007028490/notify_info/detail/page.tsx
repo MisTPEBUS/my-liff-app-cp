@@ -36,7 +36,7 @@ const defaultUser: Employee = {
 };
 
 export default function ViolationForm() {
-  const [mockData] = useState<Employee>(defaultUser);
+  const [mockData, setMockData] = useState<Employee>(defaultUser);
   const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -46,6 +46,30 @@ export default function ViolationForm() {
       console.log("🔍 目前網址的 userId:", uid);
     }
   }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    async function fetchUserIdAndData() {
+      try {
+        const response = await axios.post(
+          "https://line-notify-18ab.onrender.com/v1/api/lineHook/user/checkUser",
+          {
+            userId,
+            channelId: "2007028490",
+          }
+        );
+
+        if (response.data) {
+          setMockData(response.data);
+        }
+      } catch (error) {
+        console.error("❌ API 請求失敗:", error);
+      }
+    }
+
+    fetchUserIdAndData();
+  }, [userId]);
 
   const handleUnbind = async () => {
     if (!userId) return;
