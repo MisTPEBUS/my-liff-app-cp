@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
+import axios from "axios";
+import { closeWindow } from "@/utils/liff";
 
 type Employee = {
   id: string;
@@ -44,6 +46,24 @@ export default function ViolationForm() {
       console.log("🔍 目前網址的 userId:", uid);
     }
   }, []);
+
+  const handleUnbind = async () => {
+    if (!userId) return;
+
+    try {
+      await axios.delete(
+        `https://line-notify-18ab.onrender.com/v1/api/lineHook/user/${mockData.channelId}/${userId}`
+      );
+      alert("解除成功");
+      await closeWindow();
+    } catch (error) {
+      console.error("解除綁定失敗：", error);
+    }
+  };
+
+  const handleRedirectAndClose = async () => {
+    await closeWindow();
+  };
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white border rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-4 text-center text-orange-500">
