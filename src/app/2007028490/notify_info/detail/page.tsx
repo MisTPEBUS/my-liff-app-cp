@@ -1,10 +1,9 @@
 "use client";
 
-import axios from "axios";
 import { useEffect, useState } from "react";
+
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
-import { closeWindow } from "@/utils/liff";
 
 type Employee = {
   id: string;
@@ -34,12 +33,9 @@ const defaultUser: Employee = {
   insertAt: "",
 };
 
-const NotificationBindingPage = () => {
+export default function ViolationForm() {
+  const [mockData] = useState<Employee>(defaultUser);
   const [userId, setUserId] = useState<string | null>(null);
-  const [mockData, setMockData] = useState<Employee>(defaultUser);
-
-  setMockData(defaultUser);
-  // ✅ CSR-safe 讀取網址參數
   useEffect(() => {
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
@@ -48,50 +44,6 @@ const NotificationBindingPage = () => {
       console.log("🔍 目前網址的 userId:", uid);
     }
   }, []);
-
-  // ✅ 拿使用者資料
-  useEffect(() => {
-    if (!userId) return;
-
-    async function fetchUserIdAndData() {
-      try {
-        const response = await axios.post(
-          "https://line-notify-18ab.onrender.com/v1/api/lineHook/user/checkUser",
-          {
-            userId,
-            channelId: "2007028490",
-          }
-        );
-
-        if (response.data) {
-          setMockData(response.data);
-        }
-      } catch (error) {
-        console.error("❌ API 請求失敗:", error);
-      }
-    }
-
-    fetchUserIdAndData();
-  }, [userId]);
-
-  const handleUnbind = async () => {
-    if (!userId) return;
-
-    try {
-      await axios.delete(
-        `https://line-notify-18ab.onrender.com/v1/api/lineHook/user/${mockData.channelId}/${userId}`
-      );
-      alert("解除成功");
-      await closeWindow();
-    } catch (error) {
-      console.error("解除綁定失敗：", error);
-    }
-  };
-
-  const handleRedirectAndClose = async () => {
-    await closeWindow();
-  };
-
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white border rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-4 text-center text-orange-500">
@@ -120,16 +72,10 @@ const NotificationBindingPage = () => {
         </CardContent>
 
         <div className="mt-6 flex flex-col space-y-2">
-          <Button
-            className="w-full bg-green-500 text-white py-2 rounded font-extrabold hover:bg-green-600"
-            onClick={handleUnbind}
-          >
+          <Button className="w-full bg-green-500 text-white py-2 rounded font-extrabold hover:bg-green-600">
             是，解除綁定
           </Button>
-          <Button
-            className="w-full bg-gray-300 hover:bg-gray-400 py-2 rounded font-bold"
-            onClick={handleRedirectAndClose}
-          >
+          <Button className="w-full bg-gray-300 hover:bg-gray-400 py-2 rounded font-bold">
             否，保持綁定
           </Button>
         </div>
@@ -142,6 +88,4 @@ const NotificationBindingPage = () => {
       </Card>
     </div>
   );
-};
-
-export default NotificationBindingPage;
+}
