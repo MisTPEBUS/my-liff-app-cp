@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { format, addDays, subDays } from "date-fns";
+import { format, addDays, subDays, isAfter, startOfToday } from "date-fns";
 import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -11,16 +11,33 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 
-const NavDatePick = () => {
-  const [date, setDate] = useState<Date>(new Date());
+interface NavDatePickProps {
+  initialDate?: Date;
+  disableFuture?: boolean;
+  onDateChange?: (date: Date) => void;
+}
+
+const NavDatePick = ({
+  initialDate = new Date(),
+  disableFuture = false,
+  onDateChange,
+}: NavDatePickProps) => {
+  const [date, setDate] = useState<Date>(initialDate);
+
+  const handleChangeDate = (newDate: Date) => {
+    if (disableFuture && isAfter(newDate, startOfToday())) return;
+    setDate(newDate);
+    onDateChange?.(newDate);
+  };
 
   return (
-    <div className="flex items-center justify-center space-x-2">
+    <div className="flex items-center justify-center flex-wrap gap-2">
       {/* ← 左箭頭 */}
       <Button
         size="icon"
         variant="ghost"
-        onClick={() => setDate((prev) => subDays(prev, 1))}
+        onClick={() => handleChangeDate(subDays(date, 1))}
+        aria-label="前一天"
       >
         <ChevronLeft className="w-4 h-4" />
       </Button>
@@ -28,7 +45,10 @@ const NavDatePick = () => {
       {/* 日期顯示 + Calendar */}
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[140px] justify-between">
+          <Button
+            variant="outline"
+            className="min-w-[140px] justify-between text-sm"
+          >
             {format(date, "yyyy-MM-dd")}
             <CalendarIcon className="ml-2 w-4 h-4 text-muted-foreground" />
           </Button>
@@ -37,8 +57,9 @@ const NavDatePick = () => {
           <Calendar
             mode="single"
             selected={date}
-            onSelect={(selected) => selected && setDate(selected)}
+            onSelect={(selected) => selected && handleChangeDate(selected)}
             initialFocus
+            disabled={(date) => disableFuture && isAfter(date, startOfToday())}
           />
         </PopoverContent>
       </Popover>
@@ -47,9 +68,21 @@ const NavDatePick = () => {
       <Button
         size="icon"
         variant="ghost"
-        onClick={() => setDate((prev) => addDays(prev, 1))}
+        onClick={() => handleChangeDate(addDays(date, 1))}
+        aria-label="後一天"
+        disabled={disableFuture && isAfter(addDays(date, 1), startOfToday())}
       >
         <ChevronRight className="w-4 h-4" />
+      </Button>
+
+      {/* 今天 */}
+      <Button
+        size="sm"
+        variant="default"
+        className="text-base font-bold hover:bg-white-pure hover:text-black-main hover:border-primary hover:border"
+        onClick={() => handleChangeDate(startOfToday())}
+      >
+        今天
       </Button>
     </div>
   );

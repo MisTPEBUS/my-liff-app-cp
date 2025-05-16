@@ -17,8 +17,10 @@ const RevenueCard = ({ record }: RevenueCardProps) => {
 
   return (
     <Card
-      className={`w-full rounded-xl border border-l-4 ${
-        isReported ? "border-l-green-500" : "border-l-red-500"
+      className={`w-full rounded-xl border border-l-4 ring-1  ${
+        isReported
+          ? "border-l-green-500 ring-green-700"
+          : "border-l-red-500 ring-red-700 "
       }`}
     >
       <CardHeader>

@@ -8,7 +8,7 @@ const RevenueHistoryLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   return (
-    <div className="w-full min-h-screen flex flex-col  container ">
+    <div className="w-full min-h-screen flex flex-col  md:max-w-[640px] mx-auto md:border-2 md:border-black-main rounded-xl">
       <header className="flex items-center justify-between px-4 h-14 border-b bg-green-500">
         <button
           onClick={() => router.back()}
