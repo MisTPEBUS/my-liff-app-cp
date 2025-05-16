@@ -13,13 +13,13 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const RevenueCard = ({ record }: RevenueCardProps) => {
-  /*   const isReported = record.status === "success"; */
+  const isReported = record.status === "success";
 
   return (
     <Card
-      className="w-full rounded-xl  border border-l-red-500 border-l-4
-  {}
-    "
+      className={`w-full rounded-xl border border-l-4 ${
+        isReported ? "border-l-green-500" : "border-l-red-500"
+      }`}
     >
       <CardHeader>
         <CardTitle className="flex   justify-between items-center">
@@ -34,7 +34,13 @@ const RevenueCard = ({ record }: RevenueCardProps) => {
           </Badge>
         </CardTitle>
         <CardDescription className="flex flex-col">
-          <Badge className="text-sm font-bold  mb-2 ">未回報</Badge>
+          <Badge
+            className={`text-sm font-bold  mb-2 ${
+              isReported ? "bg-green-700" : "bg-red-700"
+            }`}
+          >
+            {isReported ? "已回報" : "未回報"}
+          </Badge>
           本日通報次數: {record.count}次
         </CardDescription>
       </CardHeader>
