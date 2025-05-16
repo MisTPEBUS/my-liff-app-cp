@@ -42,6 +42,7 @@ export default function ViolationForm() {
     setStoredUserId(userId ?? "");
     setStoredDisplayName(displayName ?? "");
   }, []);
+
   const {
     register,
     handleSubmit,
@@ -71,7 +72,6 @@ export default function ViolationForm() {
       const payload = { ...data };
       console.log(payload);
       setSubmitStatus("提交成功！");
-      // 此處呼叫 API 送出 payload
     } catch (error) {
       setSubmitStatus(`提交失敗，請重試。${error}`);
     }
@@ -110,36 +110,40 @@ export default function ViolationForm() {
           <label className="block font-semibold mb-2">
             違規事項<span className="text-red-500">*</span>
           </label>
-          <div
-            className={`grid grid-cols-${
-              violations.length > 6 ? "3" : "2"
-            } gap-2`}
-          >
-            {violations.map((v) => (
-              <label key={v} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={selectedViolations.includes(v)}
-                  onChange={() => handleCheckboxChange(v)}
-                  className="w-4 h-4"
-                />
-                <span>{v}</span>
-              </label>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {violations.map((v) => {
+              const isSelected = selectedViolations.includes(v);
+              return (
+                <button
+                  type="button"
+                  key={v}
+                  onClick={() => handleCheckboxChange(v)}
+                  className={`border rounded-md px-3 py-2 text-center text-sm font-medium transition-all duration-150 ease-in-out transform hover:scale-[1.02] active:scale-95 ${
+                    isSelected
+                      ? "bg-blue-500 text-white border-blue-500 shadow-md"
+                      : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-400"
+                  }`}
+                >
+                  {v}
+                </button>
+              );
+            })}
           </div>
           {errors.selectedViolations && (
-            <p className="text-sm text-red-500">
+            <p className="text-sm text-red-500 mt-1">
               {errors.selectedViolations.message}
             </p>
           )}
         </div>
 
-        <button className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+        <button className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">
           提交
         </button>
+
         <h6 id="channel-id" className="text-sm bg-gray-200 p-2 mt-4">
           channelId : 2007028490-user:{storedUserId}-name:{StoredDisplayName}
         </h6>
+
         {submitStatus && (
           <p className="text-center mt-2 font-semibold">{submitStatus}</p>
         )}

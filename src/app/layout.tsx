@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/utils/providers/AuthProvider";
+import { LoadingProvider } from "@/utils/providers/LoadingContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "首都客運集團通知管理平台",
-  description: "首都客運集團通知管理平台",
+  title: "StayMi",
+  description: "StayMi",
 };
 
 export default function RootLayout({
@@ -27,7 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="mx-auto">{children}</div>
+        <div className="mx-auto">
+          <AuthProvider>
+            <LoadingProvider>{children}</LoadingProvider>
+            <Toaster richColors position="top-right"></Toaster>
+          </AuthProvider>
+        </div>
       </body>
     </html>
   );
