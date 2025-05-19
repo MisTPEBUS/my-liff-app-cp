@@ -27,7 +27,13 @@ export const ConfirmSendDialog = ({ onConfirm }: ConfirmSendDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-black-sub">一鍵發送</Button>
+        <Button
+          onClick={() => {}}
+          className=" text-white-pure text-base  ring-black-main border-1 ring-2 border-black-main font-bold hover:bg-white-pure hover:text-black-main"
+          variant="secondary"
+        >
+          一鍵發送
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

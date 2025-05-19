@@ -1,4 +1,3 @@
-import NavDatePick from "./components/NavDatePick";
 import RevenueCard from "./components/RevenueCard";
 import { RevenueCardType } from "./components/RevenueCard/type";
 
@@ -53,15 +52,20 @@ const revenueData: RevenueCardType[] = [
   },
 ];
 
-const RevenueHistoryPage = () => (
-  <div>
-    <NavDatePick />
-    <div className="space-y-4 mt-4">
-      {revenueData.map((item, index) => (
-        <RevenueCard key={index} record={item} />
-      ))}
+const RevenueHistoryPage = () => {
+  const sortedRevenueData = [...revenueData].sort((a, b) => {
+    if (a.status === "pending" && b.status !== "pending") return -1;
+    if (a.status !== "pending" && b.status === "pending") return 1;
+    return 0;
+  });
+  return (
+    <div>
+      <div className="space-y-2 mt-2">
+        {sortedRevenueData.map((item, index) => (
+          <RevenueCard key={index} record={item} />
+        ))}
+      </div>
     </div>
-  </div>
-);
-
+  );
+};
 export default RevenueHistoryPage;
