@@ -42,49 +42,52 @@ const NavDatePick = ({
         今天
       </Button>
       {/* ← 左箭頭 */}
-      <Button
-        size="icon"
-        className="bg-black-main text-white-pure"
-        variant="ghost"
-        onClick={() => handleChangeDate(subDays(date, 1))}
-        aria-label="前一天"
-      >
-        <ChevronLeft className="w-4 h-4" />
-      </Button>
 
-      {/* 日期顯示 + Calendar */}
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className="min-w-[140px] justify-between text-sm text-black-main bg-white-pure hover:bg-black-main hover:text-white-pure"
-          >
-            {format(date, "yyyy-MM-dd")}
-            <CalendarIcon className="ml-2 w-4 h-4  text-black-main bg-white-pure hover:bg-black-main hover:text-white-pure" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="center">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={(selected) => selected && handleChangeDate(selected)}
-            initialFocus
-            disabled={(date) => disableFuture && isAfter(date, startOfToday())}
-          />
-        </PopoverContent>
-      </Popover>
-
-      {/* → 右箭頭 */}
-      <Button
-        size="icon"
-        variant="ghost"
-        className="bg-black-main text-white-pure"
-        onClick={() => handleChangeDate(addDays(date, 1))}
-        aria-label="後一天"
-        disabled={disableFuture && isAfter(addDays(date, 1), startOfToday())}
-      >
-        <ChevronRight className="w-4 h-4" />
-      </Button>
+      <div className="flex">
+        <Button
+          size="icon"
+          className="bg-black-main text-white-pure"
+          variant="ghost"
+          onClick={() => handleChangeDate(subDays(date, 1))}
+          aria-label="前一天"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </Button>
+        {/* 日期顯示 + Calendar */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="min-w-[100px] justify-between text-sm text-black-main bg-white-pure hover:bg-black-main hover:text-white-pure"
+            >
+              {format(date, "yyyy-MM-dd")}
+              <CalendarIcon className="ml-2 w-4 h-4  text-black-main bg-white-pure hover:bg-black-main hover:text-white-pure" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="center">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={(selected) => selected && handleChangeDate(selected)}
+              initialFocus
+              disabled={(date) =>
+                disableFuture && isAfter(date, startOfToday())
+              }
+            />
+          </PopoverContent>
+        </Popover>
+        {/* → 右箭頭 */}
+        <Button
+          size="icon"
+          variant="ghost"
+          className="bg-black-main text-white-pure"
+          onClick={() => handleChangeDate(addDays(date, 1))}
+          aria-label="後一天"
+          disabled={disableFuture && isAfter(addDays(date, 1), startOfToday())}
+        >
+          <ChevronRight className="w-4 h-4" />
+        </Button>
+      </div>
     </div>
   );
 };

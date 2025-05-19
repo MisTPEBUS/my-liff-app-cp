@@ -7,7 +7,7 @@ import { ConfirmSendDialog } from "./components/ConfirmSendDialog.tsx";
 const RevenueHistoryLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="w-full min-h-screen flex flex-col md:max-w-[640px] mx-auto md:border-2 md:border-black-main">
-      <header className="sticky top-0 z-10 ring-1 flex items-center justify-between px-10 h-14 border-b bg-green-500 md:border-black-main">
+      <header className="sticky top-0 z-10 ring-1 flex items-center px-2 justify-center  h-14 border-b bg-green-500 md:border-black-main">
         <NavDatePick
           initialDate={new Date()}
           disableFuture

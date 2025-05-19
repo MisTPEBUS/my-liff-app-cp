@@ -25,12 +25,14 @@ const RevenueCard = ({ record }: RevenueCardProps) => {
       <CardHeader className="gap-0">
         <CardTitle className="flex   justify-between items-center my-0">
           <div className="flex ">
-            <Badge className="text-base font-bold bg-black-sub mr-2">
-              {record.system}
-            </Badge>
             <div className="">
-              <h5 className="font-bold">
+              <h5 className="font-bold ml-1">
                 {record.company}-{record.dept}
+                <span>
+                  <Badge className="bg-black-sub font-bold text-white-pure">
+                    {record.system}
+                  </Badge>
+                </span>
               </h5>
               <CardDescription className="flex m-0 p-0 items-center">
                 <Badge
