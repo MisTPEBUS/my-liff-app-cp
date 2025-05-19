@@ -1,6 +1,12 @@
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+
 import { FcGoogle } from "react-icons/fc";
 
 export default function LoginForm() {
+  const [user, setUser] = useState("superUser");
+  const [pwd, setPwd] = useState("11111111");
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5] px-4">
       <div className="w-full max-w-sm p-6 bg-white rounded-xl shadow-md">
@@ -19,6 +25,8 @@ export default function LoginForm() {
             </label>
             <input
               type="text"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
               id="account"
               placeholder="請輸入帳號"
               className="w-full px-4 py-2 border border-[#D9D9D9] rounded-lg text-[#222222] placeholder-[#999999] focus:outline-none focus:ring-2 focus:ring-[#F8451A] focus:border-[#F8451A]"
@@ -35,6 +43,8 @@ export default function LoginForm() {
             </label>
             <input
               type="password"
+              value={pwd}
+              onChange={(e) => setPwd(e.target.value)}
               id="password"
               placeholder="請輸入密碼"
               className="w-full px-4 py-2 border border-[#D9D9D9] rounded-lg text-[#222222] placeholder-[#999999] focus:outline-none focus:ring-2 focus:ring-[#F8451A] focus:border-[#F8451A]"
@@ -74,12 +84,11 @@ export default function LoginForm() {
           </div>
 
           {/* 登入按鈕 */}
-          <button
-            type="submit"
-            className="w-full bg-[#F8451A] hover:bg-[#D33C3C] text-white font-bold py-2.5 rounded-lg transition-shadow hover:shadow-md"
-          >
-            立即登入
-          </button>
+          <Link href="/dashboard/revenue-history">
+            <button className="w-full bg-[#F8451A] hover:bg-[#D33C3C] text-white font-bold py-2.5 rounded-lg transition-shadow hover:shadow-md">
+              立即登入
+            </button>
+          </Link>
 
           {/* 註冊連結 */}
           <p className="mt-4 text-center text-sm text-[#4A4A4A]">

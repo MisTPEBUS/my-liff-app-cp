@@ -4,7 +4,7 @@ import { RevenueCardType } from "./components/RevenueCard/type";
 
 const revenueData: RevenueCardType[] = [
   {
-    date: "2025-05-16",
+    date: "2025-05-19",
     status: "pending",
     system: "營收比對",
     company: "台北客運",
@@ -12,7 +12,7 @@ const revenueData: RevenueCardType[] = [
     count: 1,
   },
   {
-    date: "2025-05-16",
+    date: "2025-05-19",
     status: "success",
     system: "營收比對",
     company: "首都客運",
@@ -20,7 +20,7 @@ const revenueData: RevenueCardType[] = [
     count: 3,
   },
   {
-    date: "2025-05-16",
+    date: "2025-05-19",
     status: "pending",
     system: "營收比對",
     company: "首都客運",
@@ -28,7 +28,7 @@ const revenueData: RevenueCardType[] = [
     count: 3,
   },
   {
-    date: "2025-05-16",
+    date: "2025-05-19",
     status: "pending",
     system: "營收比對",
     company: "台北客運",
