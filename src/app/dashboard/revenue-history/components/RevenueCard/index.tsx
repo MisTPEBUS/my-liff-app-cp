@@ -17,15 +17,15 @@ const RevenueCard = ({ record }: RevenueCardProps) => {
 
   return (
     <Card
-      className={`w-full rounded-xl border border-l-4 ring-1  ${
+      className={`w-full rounded-xl border border-l-4 ring-1 gap-4  py-4 ${
         isReported
           ? "border-l-green-500 ring-green-700"
           : "border-l-red-500 ring-red-700 "
       }`}
     >
-      <CardHeader>
-        <CardTitle className="flex   justify-between items-center">
-          <div>
+      <CardHeader className="gap-0">
+        <CardTitle className="flex   justify-between items-center my-0">
+          <div className="flex">
             <h3>
               {record.company}-{record.dept}
             </h3>
@@ -35,9 +35,9 @@ const RevenueCard = ({ record }: RevenueCardProps) => {
             {record.system}
           </Badge>
         </CardTitle>
-        <CardDescription className="flex flex-col">
+        <CardDescription className="flex m-0 p-0 items-center">
           <Badge
-            className={`text-sm font-bold  mb-2 ${
+            className={`text-sm font-bold mr-1   ${
               isReported ? "bg-green-700" : "bg-red-700"
             }`}
           >

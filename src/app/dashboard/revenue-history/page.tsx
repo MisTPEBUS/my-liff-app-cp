@@ -56,7 +56,7 @@ const revenueData: RevenueCardType[] = [
 const RevenueHistoryPage = () => (
   <div>
     <NavDatePick />
-    <div className="space-y-4 mt-12">
+    <div className="space-y-4 mt-4">
       {revenueData.map((item, index) => (
         <RevenueCard key={index} record={item} />
       ))}
