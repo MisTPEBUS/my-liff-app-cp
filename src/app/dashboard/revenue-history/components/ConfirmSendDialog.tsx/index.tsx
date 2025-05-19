@@ -36,7 +36,7 @@ export const ConfirmSendDialog = ({ onConfirm }: ConfirmSendDialogProps) => {
           一鍵發送
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-white-pure">
         <DialogHeader>
           <DialogTitle>確認發送</DialogTitle>
           <DialogDescription>
@@ -44,10 +44,19 @@ export const ConfirmSendDialog = ({ onConfirm }: ConfirmSendDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            className="border border-black-main"
+          >
             取消
           </Button>
-          <Button onClick={handleConfirm}>確認發送</Button>
+          <Button
+            onClick={handleConfirm}
+            className="border border-black-main text-base"
+          >
+            確認發送
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
