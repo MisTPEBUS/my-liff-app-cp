@@ -1,63 +1,24 @@
+import { getTodayDate } from "@/utils/tool";
 import RevenueCard from "./components/RevenueCard";
-import { RevenueCardType } from "./components/RevenueCard/type";
 
-const revenueData: RevenueCardType[] = [
-  {
-    date: "2025-05-19",
-    status: "pending",
-    system: "營收比對",
-    company: "台北客運",
-    dept: "四海站",
-    count: 1,
-  },
-  {
-    date: "2025-05-19",
-    status: "success",
-    system: "營收比對",
-    company: "首都客運",
-    dept: "內湖站",
-    count: 3,
-  },
-  {
-    date: "2025-05-19",
-    status: "pending",
-    system: "營收比對",
-    company: "首都客運",
-    dept: "士林站",
-    count: 3,
-  },
-  {
-    date: "2025-05-19",
-    status: "pending",
-    system: "營收比對",
-    company: "台北客運",
-    dept: "四海站",
-    count: 1,
-  },
-  {
-    date: "2025-05-16",
-    status: "success",
-    system: "營收比對",
-    company: "首都客運",
-    dept: "內湖站",
-    count: 3,
-  },
-  {
-    date: "2025-05-16",
-    status: "pending",
-    system: "營收比對",
-    company: "首都客運",
-    dept: "士林站",
-    count: 3,
-  },
-];
+import { groupAndSort, MsgRecord } from "./data";
+import axios from "axios";
 
-const RevenueHistoryPage = () => {
-  const sortedRevenueData = [...revenueData].sort((a, b) => {
-    if (a.status === "pending" && b.status !== "pending") return -1;
-    if (a.status !== "pending" && b.status === "pending") return 1;
-    return 0;
-  });
+const RevenueHistoryPage = async () => {
+  const today = getTodayDate();
+  const url = `https://line-notify-18ab.onrender.com/v1/api/lineHook/sendMsg?date=${today}`;
+
+  let records: MsgRecord[] = [];
+
+  try {
+    const response = await axios.get<MsgRecord[]>(url);
+    records = response.data;
+  } catch (error) {
+    console.error("❌ 撈取失敗：", error);
+  }
+
+  const sortedRevenueData = groupAndSort(records);
+
   return (
     <div>
       <div className="space-y-2 mt-2">

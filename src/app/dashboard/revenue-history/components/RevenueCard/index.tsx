@@ -7,12 +7,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { RevenueCardProps } from "./type";
+
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { GroupedMsgRecordProps } from "../../data";
 
-const RevenueCard = ({ record }: RevenueCardProps) => {
-  const isReported = record.status === "success";
+const RevenueCard = ({ record }: GroupedMsgRecordProps) => {
+  const isReported = record.reported_at !== null;
 
   return (
     <Card
@@ -30,7 +31,7 @@ const RevenueCard = ({ record }: RevenueCardProps) => {
                 {record.company}-{record.dept}
                 <span>
                   <Badge className="bg-black-sub font-bold text-white-pure">
-                    {record.system}
+                    {record.groupCode}
                   </Badge>
                 </span>
               </h5>
