@@ -5,12 +5,13 @@ import RevenueCardSkeleton from "./components/RevenueCardSkeleton";
 import { groupAndSort } from "./data";
 import useMsgRecordsByDate from "@/app/hooks/react-query/useMsgRecordsByDate";
 import { Inbox } from "lucide-react";
+import { useAutoRefreshAtTime } from "@/app/hooks/useAutoRefreshAtTime";
 
 const RevenueHistoryPage = () => {
   const { selectedDate } = useDateStore(); // Zustand 管理日期
   const { data, isLoading, isError } = useMsgRecordsByDate(selectedDate); // React Query 撈資料
   const sortedRevenueData = data ? groupAndSort(data) : [];
-
+  useAutoRefreshAtTime();
   const showEmpty = !isLoading && !isError && sortedRevenueData.length === 0;
   return (
     <div>
