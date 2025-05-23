@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format, addDays, subDays, isAfter, startOfToday } from "date-fns";
 import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -10,6 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { useDateStore } from "@/store/DateStore";
 
 interface NavDatePickProps {
   initialDate?: Date;
@@ -23,13 +24,18 @@ const NavDatePick = ({
   onDateChange,
 }: NavDatePickProps) => {
   const [date, setDate] = useState<Date>(initialDate);
+  const { setSelectedDate } = useDateStore();
 
   const handleChangeDate = (newDate: Date) => {
     if (disableFuture && isAfter(newDate, startOfToday())) return;
     setDate(newDate);
+    setSelectedDate(format(newDate, "yyyy-MM-dd"));
     onDateChange?.(newDate);
   };
-
+  // ✅ 初始化時同步狀態
+  useEffect(() => {
+    setSelectedDate(format(initialDate, "yyyy-MM-dd"));
+  }, []);
   return (
     <div className="flex items-center justify-center flex-wrap gap-2">
       {/* 今天 */}
