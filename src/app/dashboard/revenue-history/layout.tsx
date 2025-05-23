@@ -1,10 +1,15 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import NavDatePick from "./components/NavDatePick";
 import { ConfirmSendDialog } from "./components/ConfirmSendDialog.tsx";
-
+import { useDateStore } from "@/store/DateStore";
+import { format } from "date-fns";
 const RevenueHistoryLayout = ({ children }: { children: ReactNode }) => {
+  const { setSelectedDate } = useDateStore();
+  useEffect(() => {
+    setSelectedDate(format(new Date(), "yyyy-MM-dd"));
+  }, [setSelectedDate]);
   return (
     <div className="w-full min-h-screen flex flex-col md:max-w-[640px] mx-auto md:border-2 md:border-black-main">
       <header className="sticky top-0 z-10 ring-1 flex items-center px-2 justify-center  h-14 border-b bg-green-500 md:border-black-main">

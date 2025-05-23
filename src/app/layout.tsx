@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/utils/providers/AuthProvider";
 import { LoadingProvider } from "@/utils/providers/LoadingContext";
 import { Toaster } from "@/components/ui/sonner";
+import ReactQueryProvider from "./providers/ReactQueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,10 @@ export default function RootLayout({
       >
         <div className="mx-auto">
           <AuthProvider>
-            <LoadingProvider>{children}</LoadingProvider>
-            <Toaster richColors position="top-right"></Toaster>
+            <ReactQueryProvider>
+              <LoadingProvider>{children}</LoadingProvider>
+              <Toaster richColors position="top-right"></Toaster>
+            </ReactQueryProvider>
           </AuthProvider>
         </div>
       </body>
