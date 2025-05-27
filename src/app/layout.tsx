@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StayMi",
-  description: "StayMi",
+  title: "Line通報監控系統",
+  description: "Line通報監控系統 - 監控與管理您的Line通報",
 };
 
 export default function RootLayout({
