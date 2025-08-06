@@ -37,6 +37,11 @@ export type LineNotifyPayload = {
 const departmentOptions: Record<string, string[]> = {
   臺北客運: [
     "業務部",
+    "人力資源部",
+    "財務部",
+    "機務部",
+    "總務部",
+    "稽查課",
     "資訊中心",
     "四海站",
     "南雅站",
@@ -58,6 +63,11 @@ const departmentOptions: Record<string, string[]> = {
   ],
   首都客運: [
     "業務部",
+    "人力資源部",
+    "財務部",
+    "機務部",
+    "總務部",
+    "稽查課",
     "資訊中心",
     "三重一站",
     "二重站",
@@ -243,7 +253,6 @@ export default function TaipeiBusBinding() {
         <div>
           <label className="block font-semibold mb-2">專案群組</label>
           <input
-            disabled
             type="text"
             {...register("projectGroup")}
             className="w-full p-2 border rounded"
