@@ -136,7 +136,7 @@ export default function TaipeiBusBinding() {
     // 組裝 payload
     const payload: LineNotifyPayload = {
       company: data.company,
-      groupCode: data.projectGroup ?? "營收通知系統",
+      groupCode: data.projectGroup ?? "",
       phone: "",
       job: data.job || "",
       dept: data.dept,
@@ -261,6 +261,12 @@ export default function TaipeiBusBinding() {
             <option value="營收通知系統">營收通知系統</option>
             <option value="離職審核通知">離職審核通知</option>
           </select>
+          <div className="absolute right-2 top-10 pointer-events-none">▼</div>
+          {errors.projectGroup && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.projectGroup.message}
+            </p>
+          )}
         </div>
 
         {/* 員工編號 */}
