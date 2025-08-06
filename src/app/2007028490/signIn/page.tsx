@@ -232,7 +232,7 @@ export default function TaipeiBusBinding() {
             className="w-full p-2 border rounded bg-white appearance-none pr-8"
           >
             <option value="">請選擇職稱</option>
-            <option value="營收通知系統">營收通知系統</option>
+            <option value="協理">協理</option>
             <option value="經理">經理</option>
             <option value="副理">副理</option>
             <option value="襄理">襄理</option>
