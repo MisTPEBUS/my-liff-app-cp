@@ -232,7 +232,7 @@ export default function TaipeiBusBinding() {
             className="w-full p-2 border rounded bg-white appearance-none pr-8"
           >
             <option value="">請選擇職稱</option>
-            <option value="協理">協理</option>
+            <option value="營收通知系統">營收通知系統</option>
             <option value="經理">經理</option>
             <option value="副理">副理</option>
             <option value="襄理">襄理</option>
@@ -252,12 +252,15 @@ export default function TaipeiBusBinding() {
         {/* 專案群組 */}
         <div>
           <label className="block font-semibold mb-2">專案群組</label>
-          <input
-            type="text"
+          <select
+            defaultValue=""
             {...register("projectGroup")}
-            className="w-full p-2 border rounded"
-            placeholder="輸入專案群組"
-          />
+            className="w-full p-2 border rounded bg-white appearance-none pr-8"
+          >
+            <option value="">請選擇專案群組</option>
+            <option value="營收通知系統">營收通知系統</option>
+            <option value="離職審核通知">離職審核通知</option>
+          </select>
         </div>
 
         {/* 員工編號 */}
